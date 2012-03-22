@@ -1,0 +1,10 @@
+A simplified version of the UNIX timeout command.  It is used like so:
+
+./timeout.pl <integer specifying duration in minutes> <command> <arg1...>
+
+I've found that the typical UNIX timeout command under Linux doesn't
+behave quite right when run non-interactively.  Specifically, it will
+spawn the process, appear to put the process to sleep, and then wait until
+the timeout expires. This is clearly no good.  Perl-Timeout doesn't have
+this issue, and it was faster to write Perl-Timeout than to figure out
+this bizarre behavior for UNIX timeout.
