@@ -82,6 +82,7 @@ if ( $duration !~ /^\d+$/ ) {
     die "Duration must be an integer specifying the number of minutes to wait";
 }
 
+my $majorPid = $$;
 my $commandPid = fork();
 if ( !defined( $commandPid ) ) {
     die "Failed to fork 1";
@@ -104,6 +105,6 @@ if ( !defined( $commandPid ) ) {
 	    $secondsWaited += sleep( SECONDS_IN_MINUTE );
 	}
 
-	killFamily( 2, $commandPid );
+	killFamily( 2, $majorPid );
     }
 }
