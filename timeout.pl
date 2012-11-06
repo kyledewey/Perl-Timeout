@@ -9,6 +9,7 @@
 #
 use strict;
 use constant SECONDS_IN_MINUTE => 60;
+use constant KILL_SIGNAL => 9;
 
 # returns a reference to a mapping of pids to parent pids
 sub pidToParentPid() {
@@ -50,6 +51,7 @@ sub parentPidToDirectChildren() {
 # -pid
 # -Mapping of pids to direct children
 # returns an array of pids
+sub recurChildProcesses( $$ );
 sub recurChildProcesses( $$ ) {
     my ( $pid,
 	 $directChildrenMap ) = @_;
@@ -68,6 +70,17 @@ sub childProcesses( $ ) {
     my $pid = shift();
     my $hashRef = parentPidToDirectChildren();
     return recurChildProcesses( $pid, $hashRef );
+}
+
+sub filter( $@ ) {
+    my ( $pred, @items ) = @_;
+    my @retval;
+    foreach my $item ( @items ) {
+	if ( $pred->( $item ) ) {
+	    push( @retval, $item );
+	}
+    }
+    return @retval;
 }
 
 # given  kill signal number and a pid, kills everything
@@ -96,15 +109,13 @@ if ( !defined( $commandPid ) ) {
 	die "Failed to fork 2";
     } elsif ( $watchPid > 0 ) {
 	waitpid( $commandPid, 0 );
-	$commandPid = undef;
-	kill 2, $watchPid;
-	exit( 0 );
+	kill KILL_SIGNAL, $watchPid;
     } else { # ( $watchPid == 0 ) {
 	my $secondsWaited = 0;
 	while ( $secondsWaited < $duration * SECONDS_IN_MINUTE ) {
 	    $secondsWaited += sleep( SECONDS_IN_MINUTE );
 	}
 
-	killFamily( 2, $majorPid );
+	killFamily( KILL_SIGNAL, $commandPid );
     }
 }
