@@ -72,17 +72,6 @@ sub childProcesses( $ ) {
     return recurChildProcesses( $pid, $hashRef );
 }
 
-sub filter( $@ ) {
-    my ( $pred, @items ) = @_;
-    my @retval;
-    foreach my $item ( @items ) {
-	if ( $pred->( $item ) ) {
-	    push( @retval, $item );
-	}
-    }
-    return @retval;
-}
-
 # given  kill signal number and a pid, kills everything
 # in the family, deepest children first
 sub killFamily( $$ ) {
