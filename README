@@ -1,6 +1,6 @@
 A simplified version of the UNIX timeout command.  It is used like so:
 
-./timeout.pl <integer specifying duration in minutes> <command> <arg1...>
+./timeout.pl [-signal <integer specifying UNIX signal number to kill with>] <integer specifying duration in minutes> <command> <arg1...>
 
 I've found that the typical UNIX timeout command under Linux doesn't
 behave quite right when run non-interactively.  Specifically, it will

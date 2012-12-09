@@ -9,7 +9,7 @@
 #
 use strict;
 use constant SECONDS_IN_MINUTE => 60;
-use constant KILL_SIGNAL => 9;
+use constant DEFAULT_SIGNAL => 9;
 
 # returns a reference to a mapping of pids to parent pids
 sub pidToParentPid() {
@@ -84,6 +84,15 @@ if ( $duration !~ /^\d+$/ ) {
     die "Duration must be an integer specifying the number of minutes to wait";
 }
 
+my $signal = DEFAULT_SIGNAL;
+if ( $ARGV[ 0 ] eq '-signal' ) {
+    shift( @ARGV ); # trim -signal
+    $signal = shift( @ARGV );
+    if ( $signal !~ /^\d+$/ ) {
+	die "Signal must be an integer holding a UNIX signal number";
+    }
+}
+
 my $majorPid = $$;
 my $commandPid = fork();
 if ( !defined( $commandPid ) ) {
@@ -98,13 +107,13 @@ if ( !defined( $commandPid ) ) {
 	die "Failed to fork 2";
     } elsif ( $watchPid > 0 ) {
 	waitpid( $commandPid, 0 );
-	kill KILL_SIGNAL, $watchPid;
+	kill $signal, $watchPid;
     } else { # ( $watchPid == 0 ) {
 	my $secondsWaited = 0;
 	while ( $secondsWaited < $duration * SECONDS_IN_MINUTE ) {
 	    $secondsWaited += sleep( SECONDS_IN_MINUTE );
 	}
 
-	killFamily( KILL_SIGNAL, $commandPid );
+	killFamily( $signal, $commandPid );
     }
 }
