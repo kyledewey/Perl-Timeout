@@ -115,5 +115,6 @@ if ( !defined( $commandPid ) ) {
 	}
 
 	killFamily( $signal, $commandPid );
+	print "PROCESS TIMEOUT AFTER $duration MINUTES";
     }
 }
