@@ -100,7 +100,7 @@ if ( !defined( $commandPid ) ) {
 } elsif ( $commandPid == 0 ) {
     # process that executes the actual command
     my $command = join( " ",  @ARGV );
-    exec( $command );
+    exec( $ARGV );
 } else { #( $commandPid > 0 ) {
     my $watchPid = fork();
     if ( !defined( $watchPid ) ) {
