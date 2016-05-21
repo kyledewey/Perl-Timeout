@@ -12,7 +12,7 @@ use strict;
 use warnings;
 
 use constant SECONDS_IN_MINUTE => 60;
-use constant DEFAULT_SIGNAL => 9;
+use constant DEFAULT_SIGNAL => 15; # SIGTERM - kill default
 
 # returns a reference to a mapping of pids to parent pids
 sub pidToParentPid() {
