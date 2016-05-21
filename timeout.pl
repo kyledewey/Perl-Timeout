@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/perl -w
 
 # perl version of timeout
 # I've found that timeout doesn't work quite right
@@ -7,7 +7,10 @@
 #
 # timeouts are in minutes
 #
+
 use strict;
+use warnings;
+
 use constant SECONDS_IN_MINUTE => 60;
 use constant DEFAULT_SIGNAL => 9;
 
