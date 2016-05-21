@@ -99,7 +99,6 @@ if ( !defined( $commandPid ) ) {
     die "Failed to fork 1";
 } elsif ( $commandPid == 0 ) {
     # process that executes the actual command
-    my $command = join( " ",  @ARGV );
     exec( $ARGV );
 } else { #( $commandPid > 0 ) {
     my $watchPid = fork();
